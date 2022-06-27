@@ -1,46 +1,45 @@
 from random import randint
 
 
-class Dot:
+class Dot:  # Создаем тип точка
     def __init__(self, x, y):
         self.x = x
         self.y = y
 
-    def __eq__(self, other):
+    def __eq__(self, other):  # сравнение аргументов
         return self.x == other.x and self.y == other.y
 
-    def __repr__(self):
+    def __repr__(self):  # вывод точек в консоль
         return f"({self.x}, {self.y})"
 
 
-class BoardException(Exception):
+class BoardException(Exception):  # Общий класс исключений
     pass
 
 
-class BoardOutException(BoardException):
+class BoardOutException(BoardException):  # Неверные координаты выстрела
     def __str__(self):
         return "Вы пытаетесь выстрелить за доску!"
 
 
-class BoardUsedException(BoardException):
+class BoardUsedException(BoardException):  # Снаряд в одно место дважды не попадает
     def __str__(self):
-        return "Вы уже стреляли в эту клетку"
+        return "Вы уже стреляли сюда"
 
 
-class BoardWrongShipException(BoardException):
+class BoardWrongShipException(BoardException):  # Исключение невозможного расположения кораблей
     pass
 
 
-class Ship:
+class Ship:  # Класс корабль
     def __init__(self, bow, l, o):
-        self.bow = bow
-        self.l = l
-        self.o = o
-        self.lives = l
-
+        self.bow = bow   # координаты начала корабля
+        self.l = l       # размер корабля
+        self.o = o       # ориентация корабля
+        self.lives = l   # количество жизнеспособных отсеков корабля
     @property
-    def dots(self):
-        ship_dots = []
+    def dots(self):  # конструктор корабля
+        ship_dots = []  # список кораблей
         for i in range(self.l):
             cur_x = self.bow.x
             cur_y = self.bow.y
@@ -55,16 +54,16 @@ class Ship:
 
         return ship_dots
 
-    def shooten(self, shot):
+    def shooten(self, shot):  # проверка на совпадение координат выстрела и корабля
         return shot in self.dots
 
 
-class Board:
+class Board:  # Тип доска (игровое поле)
     def __init__(self, hid=False, size=10):
         self.size = size
         self.hid = hid
 
-        self.count = 0
+        self.count = 0  # количество пораженных кораблей
 
         self.field = [["O"] * size for _ in range(size)]
 
